@@ -1,0 +1,95 @@
+version: "3.9"
+
+services:
+  # =========================
+  # PostgreSQL Databases
+  # =========================
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${docker_password}
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  leave-db:
+    image: postgres:15
+    container_name: leave-db
+    environment:
+      POSTGRES_DB: leave_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${docker_password}
+    ports:
+      - "5434:5432"
+    volumes:
+      - leave_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  # =========================
+  # Service Registry (Eureka)
+  # =========================
+  service-registry:
+    build: ./service-registry
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    depends_on:
+      auth-db:
+        condition: service_healthy
+      leave-db:
+        condition: service_healthy
+
+  # =========================
+  # Auth Management Service
+  # =========================
+  auth-service:
+    build: ./auth-management
+    container_name: auth-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/auth_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${docker_password}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      service-registry:
+        condition: service_started
+      auth-db:
+        condition: service_healthy
+
+  # =========================
+  # Leave Management Service
+  # =========================
+  leave-service:
+    build: ./leave_management
+    container_name: leave-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://leave-db:5432/leave_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${docker_password}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      service-registry:
+        condition: service_started
+      leave-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+
+volumes:
+  auth_db_data:
+  leave_db_data:
