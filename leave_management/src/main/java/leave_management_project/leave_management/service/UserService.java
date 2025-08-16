@@ -1,7 +1,8 @@
-package auth_management_service.auth_management.service;
+package leave_management_project.leave_management.service;
 
-import auth_management_service.auth_management.model.User;
-import auth_management_service.auth_management.repository.UserRepository;
+
+import leave_management_project.leave_management.Repository.UserRepository;
+import leave_management_project.leave_management.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,15 +1,19 @@
-package auth_management_service.auth_management.controller;
+package leave_management_project.leave_management.controller;
 
-import auth_management_service.auth_management.dto.JwtResponseDto;
-import auth_management_service.auth_management.dto.LoginRequestDto;
-import auth_management_service.auth_management.dto.RegisterRequestDto;
-import auth_management_service.auth_management.model.User;
-import auth_management_service.auth_management.service.UserService;
-import auth_management_service.auth_management.config.JwtUtils;
+
+import leave_management_project.leave_management.config.JwtUtils;
+import leave_management_project.leave_management.dto.JwtResponseDto;
+import leave_management_project.leave_management.dto.LoginRequestDto;
+import leave_management_project.leave_management.dto.RegisterRequestDto;
+import leave_management_project.leave_management.model.User;
+import leave_management_project.leave_management.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 

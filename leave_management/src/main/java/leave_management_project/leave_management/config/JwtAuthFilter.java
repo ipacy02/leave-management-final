@@ -1,4 +1,4 @@
-package auth_management_service.auth_management.config;
+package leave_management_project.leave_management.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

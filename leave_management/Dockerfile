@@ -1,18 +1,13 @@
-# Stage 1: Build jar with JDK 21
-FROM maven:3.9.8-eclipse-temurin-21 AS build
-WORKDIR /app
+ # Stage 1: Build stage
+  FROM maven:3.8.8-eclipse-temurin-21 AS builder
+  WORKDIR /build
+  COPY pom.xml ./
+  COPY src ./src
+  RUN mvn clean package -DskipTests
 
-COPY pom.xml .
-COPY src ./src
-
-RUN mvn clean package -DskipTests
-
-# Stage 2: Run jar with JDK 21
-FROM eclipse-temurin:21-jdk-jammy
-WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
-EXPOSE 8081
-
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+  # Stage 2: Runtime stage
+  FROM eclipse-temurin:21
+  WORKDIR /app
+  COPY --from=builder /build/target/*.jar /app/app.jar
+  EXPOSE 8080
+  ENTRYPOINT ["java", "-jar", "app.jar"]

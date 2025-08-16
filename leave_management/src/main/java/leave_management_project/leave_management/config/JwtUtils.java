@@ -1,12 +1,11 @@
-package auth_management_service.auth_management.config;
+package leave_management_project.leave_management.config;
 
-import auth_management_service.auth_management.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import leave_management_project.leave_management.model.User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 
 @Component

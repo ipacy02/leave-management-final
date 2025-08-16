@@ -1,4 +1,4 @@
-package auth_management_service.auth_management.dto;
+package leave_management_project.leave_management.dto;
 
 import lombok.Data;
 

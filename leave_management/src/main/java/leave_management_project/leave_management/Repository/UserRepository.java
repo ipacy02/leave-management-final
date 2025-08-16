@@ -1,6 +1,6 @@
-package auth_management_service.auth_management.repository;
+package leave_management_project.leave_management.Repository;
 
-import auth_management_service.auth_management.model.User;
+import leave_management_project.leave_management.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
