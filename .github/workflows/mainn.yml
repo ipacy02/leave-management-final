@@ -1,17 +1,24 @@
-name: Run unit tests on feature branches
+name: Run unit tests
 
 on:
   push:
-    branches: [master]
-       
+    branches:
+      - master
+  pull_request:
 
 jobs:
-  run-unit-test:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
 
       - name: Run unit tests
         run: mvn test
