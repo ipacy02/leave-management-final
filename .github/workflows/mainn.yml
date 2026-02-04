@@ -2,8 +2,8 @@ name: Run unit tests on feature branches
 
 on:
   push:
-    branches:
-      - main
+    branches: [master]
+       
 
 jobs:
   run-unit-test:
